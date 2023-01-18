@@ -12,10 +12,24 @@ client = discord.Client(intents=intents)
 @client.event
 async def on_message(message):
     if message.author == client.user:
-        return
+        # add reaction to own message bar chart
+        await message.add_reaction("📊")
+        # add reaction to own message repeat
+        await message.add_reaction("🔁")
+        # add reaction to own message heart
+        await message.add_reaction("❤️")
+
     ratio_phrase = phrase_to_ratio(message.content)
     if ratio_phrase != "":
         await message.channel.send(ratio_phrase)
+
+@client.event
+async def on_message_edit(before,after):
+    if after.author == client.user:
+        return
+    ratio_phrase = phrase_to_ratio(after.content)
+    if ratio_phrase != "":
+        await after.channel.send(ratio_phrase)
 
 
 client.run(os.getenv("TOKEN"))
