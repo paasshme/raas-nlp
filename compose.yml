@@ -1,0 +1,7 @@
+services:
+  raas:
+    build: ./RAAS
+    environment:
+      TOKEN: REPLACE-BY-YOUR-DISCORD-TOKEN
+      FR_MODEL: fr_core_news_sm
+      FR_LEMMA_PATH: ./lemmatization-fr.txt
