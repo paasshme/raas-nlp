@@ -18,7 +18,7 @@ async def on_message(message):
         await message.add_reaction("🔁")
         # add reaction to own message heart
         await message.add_reaction("❤️")
-
+        return
     ratio_phrase = phrase_to_ratio(message.content)
     if ratio_phrase != "":
         await message.channel.send(ratio_phrase)

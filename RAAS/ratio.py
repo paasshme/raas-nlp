@@ -84,11 +84,6 @@ def phrase_to_ratio(phrase):
     print("res" + res)
     return res
 
-#for line in sys.stdin:
-#    if 'q' == line.rstrip():
-#        break
-#    print(f'Input : {phrase_to_ratio(line)}')
-#    print("Viens te faire ratio ptit pd")
 
 
 
