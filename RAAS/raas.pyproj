@@ -32,7 +32,11 @@
     <InterpreterReference Include="CondaEnv|CondaEnv|env1" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="assets\siuu.gif" />
     <Content Include="requirements.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="assets\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
