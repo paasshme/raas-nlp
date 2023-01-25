@@ -93,7 +93,7 @@ def phrase_to_ratio(phrase):
         phrase = phrase.replace("J'","il ")
         phrase = phrase.replace(" j'","il ")
         phrase = phrase.replace(" m'"," s'")
-        phrase = phrase.replace(" me"," se")
+        phrase = phrase.replace(" me "," se ")
         phrase = phrase.rstrip()
 
     res = f"Et ce ratio {phrase} ???"

@@ -53,8 +53,9 @@ async def on_reaction_add(reaction, user):
     if reaction.message.author == client.user and user != client.user:
         users = [user async for user in reaction.users()]
         if len(users) / reaction.message.guild.member_count > 0.75:
-            await reaction.message.channel.send("💫🌟 Ce ratio est légendaire 🌟💫 je dead ça chakal 🏴‍☠️🏴‍☠️🏴‍☠️💯🤙🤙🤙🤙")
-            await reaction.message.channel.send("💯"*15)
+            await reaction.message.channel.send("💫🌟 Ce ratio est légendaire 🌟💫 ")
+            await reaction.message.channel.send("je dead ça chakal 🏴‍☠️🏴‍☠️🏴‍☠️💯🤙🤙🤙🤙")
+            await reaction.message.channel.send("💯"*6)
         
 client.run(os.getenv("TOKEN"))
 
