@@ -17,18 +17,23 @@ async def handleSpecialMessages(message):
     if "cr7" in message.content.lower() or "messi" in message.content.lower():
         await message.channel.send(file=discord.File('assets/siuu.gif'))
         return True
+    if "cristiano" in message.content.lower() or "ronaldo" in message.content.lower():
+        await message.channel.send(file=discord.File('assets/cristiano.gif'))
+        return True
+    if "!version" in message.content.lower():
+        await message.channel.send("v1.3.3 🤙")
+        return True
+    
     return False
         
 @client.event
 async def on_message(message):
     if message.author == client.user and message.content.startswith("Et ce ratio"):
-        # add reaction to own message bar chart
-        # add reaction to own message repeat
         await message.add_reaction("🔁")
-        # add reaction to own message heart
         await message.add_reaction("❤️")
         await message.add_reaction("📊")
-
+        return
+    elif message.author == client.user:
         return
     
     print("Received message: ", message.content)
@@ -50,7 +55,7 @@ async def on_message_edit(before,after):
 @client.event
 async def on_reaction_add(reaction, user):
     # send a message if every server member reacted to a message from the bot with a heart reactions
-    if reaction.message.author == client.user and user != client.user:
+    if reaction.message.author == client.user and user != client.user and reaction.emoji == "❤️":
         users = [user async for user in reaction.users()]
         if len(users) / reaction.message.guild.member_count > 0.75:
             await reaction.message.channel.send("💫🌟 Ce ratio est légendaire 🌟💫 ")
@@ -58,4 +63,3 @@ async def on_reaction_add(reaction, user):
             await reaction.message.channel.send("💯"*6)
         
 client.run(os.getenv("TOKEN"))
-
