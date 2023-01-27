@@ -14,16 +14,13 @@ async def handleSpecialMessages(message):
     if message.content == "!ping":
         await message.channel.send("pong uwu")
         return True
-    if "cr7" in message.content.lower() or "messi" in message.content.lower():
-        await message.channel.send(file=discord.File('assets/siuu.gif'))
-        return True
-    if "cristiano" in message.content.lower() or "ronaldo" in message.content.lower():
-        await message.channel.send(file=discord.File('assets/cristiano.gif'))
-        return True
     if "!version" in message.content.lower():
         await message.channel.send("v1.3.3 🤙")
         return True
-    
+    goats = ["🐐", "goat", "lionel", "messi", "cr7", "cristiano", "ronaldo"]
+    if any(goat in message.content.lower() for goat in goats):
+        await message.channel.send(file=discord.File('assets/siuu.gif'))
+        return True
     return False
         
 @client.event
