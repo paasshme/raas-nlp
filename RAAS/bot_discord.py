@@ -15,7 +15,7 @@ async def handleSpecialMessages(message):
         await message.channel.send("pong uwu")
         return True
     if "!version" in message.content.lower():
-        await message.channel.send("v1.3.3 🤙")
+        await message.channel.send("v1.3.4 🤙")
         return True
     goats = ["🐐", "goat", "lionel", "messi", "cr7", "cristiano", "ronaldo"]
     if any(goat in message.content.lower() for goat in goats):
