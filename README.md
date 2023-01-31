@@ -2,6 +2,10 @@
 
 Ratio-as-a-service is a simple service to generate Twitter-like ratios in French.
 
+## Add the bot to your server
+
+Click [here](https://discord.com/api/oauth2/authorize?client_id=1063961840108970054&permissions=75840&scope=bot) and follow the instruction 
+
 ## Quickstart
 The service is available as a Docker image.
 
