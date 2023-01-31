@@ -15,7 +15,7 @@ async def handleSpecialMessages(message):
         await message.channel.send("pong uwu")
         return True
     if "!version" in message.content.lower():
-        await message.channel.send("v1.3.4 🤙")
+        await message.channel.send("v1.4.1 🤙")
         return True
     goats = ["🐐", "goat", "lionel", "messi", "cr7", "cristiano", "ronaldo"]
     if any(goat in message.content.lower() for goat in goats):
@@ -55,8 +55,8 @@ async def on_reaction_add(reaction, user):
     if reaction.message.author == client.user and user != client.user and reaction.emoji == "❤️":
         users = [user async for user in reaction.users()]
         if len(users) / reaction.message.guild.member_count > 0.75:
-            await reaction.message.channel.send("💫🌟 Ce ratio est légendaire 🌟💫 ")
-            await reaction.message.channel.send("je dead ça chakal 🏴‍☠️🏴‍☠️🏴‍☠️💯🤙🤙🤙🤙")
-            await reaction.message.channel.send("💯"*6)
+            await reaction.message.channel.send(" j'ai dead ça chakal 💯 💉 🏴‍☠️ 🤣")
+            await reaction.message.channel.send(file=discord.File('assets/looser.gif'))
+            
         
 client.run(os.getenv("TOKEN"))

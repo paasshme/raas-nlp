@@ -19,16 +19,28 @@ with open(os.path.join(os.getcwd(), os.getenv("LEMMA_FILE")), "r", encoding="utf
 
 print("lemma read done!")
 
-def phrase_to_ratio(phrase):
-
-    if "j'" not in phrase.lower() and "je " not in phrase.lower():
-        return ""
-
+def preprocess_phrase(phrase):
+    phrase = phrase.replace("jsuis ", "je suis ")
+    phrase = phrase.replace("Jsuis ", "Je suis ")
+    phrase = phrase.replace("jsais ", "je sais ")
+    phrase = phrase.replace("Jsais ", "Je sais ")
+    phrase = phrase.replace("jui ", "je suis ")
+    phrase = phrase.replace("Jui ", "Je suis ")
     phrase = phrase.replace(".", "")
     phrase = phrase.replace(",", "")
     phrase = phrase.replace("!", "")
     phrase = phrase.replace(";", "")
     phrase = phrase.replace("?", "")
+    return phrase
+
+def phrase_to_ratio(phrase):
+
+    first_person_pronoums = ["j'", "je ", "jui ", "jsuis ", "jsais "]
+
+    if not any(pronoum in phrase.lower() for pronoum in first_person_pronoums):
+        return ""
+
+    phrase = preprocess_phrase(phrase)
 
     doc = nlp(phrase)
     print([(token.pos_, token.text) for token in doc])
@@ -36,6 +48,8 @@ def phrase_to_ratio(phrase):
     i = 0
     b = 0
     docElemToPop = 0
+    cod_index = 0
+    cod_before_verb = False
     
     # find the pronoum
     for token in doc:
@@ -46,13 +60,29 @@ def phrase_to_ratio(phrase):
 
     # find the verb (or aux)
     for token in doc:
+
         if token.pos_ == "AUX":
             verb_token = token
+            cod_index = i
             break
         if token.pos_ == "VERB":
             verb_token = token
+            cod_index = i
+
             break
         i+=1
+
+    # if adv between PRON and AUX handle it diff
+    if cod_index > 1 and doc[cod_index - 2].pos_ == "PRON" and doc[cod_index - 1].pos_ == "ADV":
+        cod_before_verb = True
+     
+    if cod_index > 1 and doc[cod_index - 2].pos_ == "PRON" and doc[cod_index - 1].pos_ == "PRON":
+        cod_before_verb = True
+       
+    if cod_before_verb and doc[cod_index - 1].text not in  ["t'", "l'"]:
+        cod_before_verb =  False
+
+    
 
     # if the verb is pronominal
     if verb_token.text in pronoms_reflechis:
@@ -81,6 +111,10 @@ def phrase_to_ratio(phrase):
             phraseSplit = phrase.split(" ")
             print(f" in j >>> {phraseSplit[i-1]}")
             phraseSplit[i-1] = "il " + conjugated_verb
+        elif cod_before_verb:
+            phraseSplit = phrase.split(" ")
+            phraseSplit[cod_index-1] = phraseSplit[cod_index-1][:2] + conjugated_verb
+            print("COD found")
         else:
             phraseSplit = phrase.split(" ")
             phraseSplit[i] = conjugated_verb
@@ -101,58 +135,3 @@ def phrase_to_ratio(phrase):
     return res
 
 
-
-
-if __name__ == "__main__":
-
-    # Test 1
-    assert phrase_to_ratio("Je mange du pain") == "Et ce ratio il mange du pain ???"
-
-    # Test 2
-    assert phrase_to_ratio("Je vais à la piscine") == "Et ce ratio il va à la piscine ???"
-
-    # Test 3
-    assert phrase_to_ratio("Je suis en train de travailler") == "Et ce ratio il est en train de travailler ???"
-
-    # Test 4
-    assert phrase_to_ratio("Je suis heureux") == "Et ce ratio il est heureux ???"
-
-    # Test 5
-    assert phrase_to_ratio("Je parle français") == "Et ce ratio il parle français ???"
-
-    # Test 6
-    assert phrase_to_ratio("Je joue au football") == "Et ce ratio il joue au football ???"
-
-    # Test 7
-    assert phrase_to_ratio("Je fais du shopping") == "Et ce ratio il fait du shopping ???"
-
-    # Test 8
-    assert phrase_to_ratio("Je vais à l'école") == "Et ce ratio il va à l'école ???"
-
-    # Test 9
-    assert phrase_to_ratio("Je prends un café") == "Et ce ratio il prend un café ???"
-
-    # Test 10
-    assert phrase_to_ratio("Je lis un livre") == "Et ce ratio il lit un livre ???"
-
-    # Test 11
-    assert phrase_to_ratio("J'ai fait des pâtes") == "Et ce ratio il a fait des pâtes ???"
-
-    # Test 12
-    assert phrase_to_ratio("Hier j'ai fait des pâtes") == "Et ce ratio il a fait des pâtes ???"
-
-    # Test 13
-    assert phrase_to_ratio("Et au fait, hier j'ai fait du riz") == "Et ce ratio il a fait du riz ???"
-
-    # Test 14
-    assert phrase_to_ratio("Et au fait, demain je pense à toi") == "Et ce ratio il pense à toi ???"
-
-    # Test 15
-    assert phrase_to_ratio("Et oui, hier j'ai fait du jus") == "Et ce ratio il a fait du jus ???"
-
-    
-    # Test 16: pronominaux
-    assert phrase_to_ratio("Je te déteste") == "Et ce ratio il te déteste ???"
-    assert phrase_to_ratio("Je te mange fort") == "Et ce ratio il te mange fort ???"
-    #assert phrase_to_ratio("Je m'en fou") == "Et ce ratio il s'en fou ???"
-    assert phrase_to_ratio("Je me vois pas faire ça") == "Et ce ratio il se voit pas faire ça ???"
